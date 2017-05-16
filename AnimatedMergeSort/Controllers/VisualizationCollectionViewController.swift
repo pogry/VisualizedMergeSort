@@ -131,55 +131,14 @@ class VisualizationCollectionViewController: UICollectionViewController {
                 // merge two arrays into one, move to merged arrays
                 
                 var leftArray = self.needToMerge[0]
-                let rightArray = self.needToMerge[1]
-                let leftArrayCount = leftArray.count
-                let totalCount = leftArray.count + rightArray.count
-                // save the transform to perform animation. Index represents old ordering, value - new ordering
-                var transform = [Int]()
-                for i in 0..<totalCount {
-                    transform.append(i)
-                }
                 
+                let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
                 
-                for i in 0..<rightArray.count {
-                    var inserted = false
-                    for j in 0..<leftArray.count {
-                        if rightArray[i] < leftArray[j] {
-                            leftArray.insert(rightArray[i], at: j)
-                            inserted = true
-                            
-                            // adjust transform
-                            // 'move' all elements next to inserted
-                            for k in 0..<transform.count {
-                                if transform[k] >= j {
-                                    transform[k] += 1
-                                }
-                            }
-                            transform[leftArrayCount + i] = j
-                            break
-                        }
-                    }
-                    if !inserted {
-                        leftArray.append(rightArray[i])
-                        // adjust transform
-                        for k in 0..<transform.count {
-                            if transform[k] >= leftArray.count - 1 {
-                                transform[k] += 1
-                            }
-                        }
-                        
-                        transform[leftArrayCount + i] = leftArray.count - 1
-                    }
-                    
-                }
-                
+                // start merging process - move left array down
                 self.collectionView?.performBatchUpdates({
-                    let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
-                    // move items from 0 section to 1st. Adjust indexes by already merged items and corresponding to transform
-                    for i in 0..<totalCount {
-                        self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + transform[i], section: 1))
+                    for i in 0..<leftArray.count {
+                        self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + i, section: 1))
                     }
-                    self.needToMerge.remove(at: 1)
                     self.needToMerge.remove(at: 0)
                     self.merged.append(leftArray)
                     
@@ -187,9 +146,61 @@ class VisualizationCollectionViewController: UICollectionViewController {
                     self.layout.needToMerge = self.needToMerge
                 }, completion: { (success) in
                     if success {
-                        self.merge()
+                        // merge each item from right array
+                        var itemMerge: (() -> Void)!
+                        // placeholder trick for recursive call inside a closure
+                        let placeholder: () -> Void = { () in
+                            // insert item into merged array
+                            let performInsert: (_ index: Int) -> Void = { (index) in
+                                var shouldMoveToNextLevel = false
+                                leftArray.insert(self.needToMerge[0][0], at: index)
+                                self.needToMerge[0].remove(at: 0)
+                                if self.needToMerge[0].isEmpty {
+                                    self.needToMerge.remove(at: 0)
+                                    shouldMoveToNextLevel = true
+                                }
+                                self.collectionView?.performBatchUpdates({ 
+                                    // move inserted item
+                                    self.collectionView?.moveItem(at: IndexPath(item: 0, section: 0), to: IndexPath(item: mergedItemCount + index, section: 1))
+                                    // adjust existing items
+                                    for j in index..<leftArray.count-1 {
+                                        self.collectionView?.moveItem(at: IndexPath(item: mergedItemCount + j, section: 1), to: IndexPath(item: mergedItemCount + j + 1, section: 1))
+                                    }
+                                    self.merged[self.merged.count - 1] = leftArray
+                                    
+                                    self.layout.merged = self.merged
+                                    self.layout.needToMerge = self.needToMerge
+                                    
+                                }, completion: { (success) in
+                                    if success {
+                                        if shouldMoveToNextLevel {
+                                            self.merge()
+                                        } else {
+                                            itemMerge()
+                                        }
+                                    }
+                                })
+                            }
+                            
+                            var inserted = false
+                            for i in 0..<leftArray.count {
+                                if self.needToMerge[0][0] < leftArray[i] {
+                                    inserted = true
+                                    performInsert(i)
+                                    break
+                                }
+                            }
+                            if !inserted {
+                                performInsert(leftArray.count)
+                            }
+                        }
+                        itemMerge = placeholder
+                        itemMerge()
                     }
                 })
+                
+                
+                
             }
         }
     }

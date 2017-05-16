@@ -24,8 +24,8 @@ class InputTableViewController: UITableViewController, InputTableViewCellDelegat
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // start editing first cell after view appears
-        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) {
+        // start editing last cell after view appears
+        if let cell = tableView.cellForRow(at: IndexPath(row: tableView.numberOfRows(inSection: 0) - 1, section: 0)) {
             cell.becomeFirstResponder()
         }
         

@@ -42,7 +42,15 @@ class MergeSortCollectionViewLayout: UICollectionViewLayout {
         if merged.count == 0 {
             countAtStartOfLevelMerge = needToMerge.count
         } else if needToMerge.count > 0 {
-            countAtStartOfLevelMerge = needToMerge.count + 2 * merged.count
+            var expectedMergedSize, expectedNeedToMergeSize: Int
+            if needToMerge[0].count * 2 == merged[merged.count - 1].count {
+                expectedMergedSize = merged[merged.count - 1].count
+                expectedNeedToMergeSize = needToMerge[0].count
+            } else {
+                expectedMergedSize = needToMerge[0].count + merged[merged.count - 1].count
+                expectedNeedToMergeSize = Int(ceil(Double(expectedMergedSize / 2)))
+            }
+            countAtStartOfLevelMerge = Int(ceil(Double(totalItemCount / expectedNeedToMergeSize)))
         }
         
         if countAtStartOfLevelMerge > 0 {
@@ -53,7 +61,7 @@ class MergeSortCollectionViewLayout: UICollectionViewLayout {
             needToMergeLevel = mergedLevel - 1
         }
         
-        // adjust sizes & offsets to feet the screen
+        // adjust sizes & offsets to fit the screen
         let width = collectionView!.bounds.width
         itemSize = min(100, (width - CGFloat(totalItemCount + 1) * topLevelHorizontalOffset) / CGFloat(totalItemCount))
         verticalOffset = (collectionView!.bounds.height - CGFloat(verticalLevels + 1) * itemSize) / CGFloat(verticalLevels)
