@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		D2DCCB391ECAD9880029FB49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB381ECAD9880029FB49 /* AppDelegate.swift */; };
-		D2DCCB3B1ECAD9880029FB49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB3A1ECAD9880029FB49 /* ViewController.swift */; };
 		D2DCCB3E1ECAD9880029FB49 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2DCCB3C1ECAD9880029FB49 /* Main.storyboard */; };
 		D2DCCB401ECAD9880029FB49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2DCCB3F1ECAD9880029FB49 /* Assets.xcassets */; };
 		D2DCCB431ECAD9880029FB49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2DCCB411ECAD9880029FB49 /* LaunchScreen.storyboard */; };
+		D2DCCB4C1ECAE0630029FB49 /* InputTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */; };
+		D2DCCB4F1ECAE1AD0029FB49 /* InputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D2DCCB351ECAD9880029FB49 /* AnimatedMergeSort.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimatedMergeSort.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2DCCB381ECAD9880029FB49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D2DCCB3A1ECAD9880029FB49 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D2DCCB3D1ECAD9880029FB49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2DCCB3F1ECAD9880029FB49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2DCCB421ECAD9880029FB49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D2DCCB441ECAD9880029FB49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputTableViewController.swift; path = Controllers/InputTableViewController.swift; sourceTree = "<group>"; };
+		D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputTableViewCell.swift; path = Views/InputTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,31 @@
 		D2DCCB371ECAD9880029FB49 /* AnimatedMergeSort */ = {
 			isa = PBXGroup;
 			children = (
+				D2DCCB4D1ECAE17E0029FB49 /* Views */,
+				D2DCCB4A1ECAE04A0029FB49 /* Controllers */,
 				D2DCCB381ECAD9880029FB49 /* AppDelegate.swift */,
-				D2DCCB3A1ECAD9880029FB49 /* ViewController.swift */,
 				D2DCCB3C1ECAD9880029FB49 /* Main.storyboard */,
 				D2DCCB3F1ECAD9880029FB49 /* Assets.xcassets */,
 				D2DCCB411ECAD9880029FB49 /* LaunchScreen.storyboard */,
 				D2DCCB441ECAD9880029FB49 /* Info.plist */,
 			);
 			path = AnimatedMergeSort;
+			sourceTree = "<group>";
+		};
+		D2DCCB4A1ECAE04A0029FB49 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D2DCCB4D1ECAE17E0029FB49 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,7 +115,7 @@
 				TargetAttributes = {
 					D2DCCB341ECAD9880029FB49 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 9R4AYQE9D9;
+						DevelopmentTeam = WR52ERJ399;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -137,7 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2DCCB3B1ECAD9880029FB49 /* ViewController.swift in Sources */,
+				D2DCCB4C1ECAE0630029FB49 /* InputTableViewController.swift in Sources */,
+				D2DCCB4F1ECAE1AD0029FB49 /* InputTableViewCell.swift in Sources */,
 				D2DCCB391ECAD9880029FB49 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,7 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9R4AYQE9D9;
+				DEVELOPMENT_TEAM = WR52ERJ399;
 				INFOPLIST_FILE = AnimatedMergeSort/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KEYPR.AnimatedMergeSort;
@@ -274,7 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9R4AYQE9D9;
+				DEVELOPMENT_TEAM = WR52ERJ399;
 				INFOPLIST_FILE = AnimatedMergeSort/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.KEYPR.AnimatedMergeSort;
