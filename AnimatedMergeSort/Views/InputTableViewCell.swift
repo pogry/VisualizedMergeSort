@@ -37,7 +37,7 @@ class InputTableViewCell: UITableViewCell, UITextFieldDelegate {
         keyboardToolbar.sizeToFit()
         let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
                                             target: nil, action: nil)
-        nextBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(completeInput))
+        nextBarButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(completeInput))
         keyboardToolbar.items = [flexBarButton, nextBarButton]
         inputTextField.inputAccessoryView = keyboardToolbar
     }

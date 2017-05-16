@@ -19,13 +19,14 @@ class VisualizationCollectionViewController: UICollectionViewController {
     
     var layout: MergeSortCollectionViewLayout!
     
-    let animationSpeed = Float(0.2)
-    let animationDelay = 0.2
+    let animationSpeed = Float(0.25)
+    let animationDelay = 0.15
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         layout = collectionView?.collectionViewLayout as! MergeSortCollectionViewLayout
+        // adjust animation speed
         collectionView?.forFirstBaselineLayout.layer.speed = animationSpeed
         collectionView?.forLastBaselineLayout.layer.speed = animationSpeed
         
@@ -40,13 +41,14 @@ class VisualizationCollectionViewController: UICollectionViewController {
     }
     
     // MARK: - sort
-    
+    // begin sort
     func mergeSort() {
         splitMerged {
             self.merge()
         }
     }
     
+    // Split an array into 1-element arrays. Only used at the start of sort algorithm
     func splitMerged(completion:@escaping () -> Void) {
         needToMerge = []
         for array in merged {
@@ -70,6 +72,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
         })
     }
     
+    // Swap merged and unmerged arrays. Needed at each step (represented as vertical level) of merge sort
     func swapMergedAndUnmerged(completion:@escaping () -> Void) {
         needToMerge = merged
         merged = []
@@ -94,11 +97,13 @@ class VisualizationCollectionViewController: UICollectionViewController {
     }
     
     func merge() {
+        // delay between each merge needed for better visual experience
         DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
             if self.needToMerge.count == 0 {
                 if self.merged.count == 1 {
                     // array is sorted
                 } else {
+                    // array isn't sorted yet, swap merged & unmerged and continue
                     self.swapMergedAndUnmerged {
                         self.merge()
                     }
@@ -107,6 +112,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
                 // odd number of arrays, just move an array to merged
                 self.collectionView?.performBatchUpdates({
                     let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
+                    // move all items from 0 section into 1st and adjusting indexes
                     for i in 0..<self.needToMerge[0].count {
                         self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + i, section: 1))
                     }
@@ -122,11 +128,13 @@ class VisualizationCollectionViewController: UICollectionViewController {
                     }
                 })
             } else {
+                // merge two arrays into one, move to merged arrays
+                
                 var leftArray = self.needToMerge[0]
                 let rightArray = self.needToMerge[1]
                 let leftArrayCount = leftArray.count
                 let totalCount = leftArray.count + rightArray.count
-                // save the transform to perform animation
+                // save the transform to perform animation. Index represents old ordering, value - new ordering
                 var transform = [Int]()
                 for i in 0..<totalCount {
                     transform.append(i)
@@ -141,15 +149,13 @@ class VisualizationCollectionViewController: UICollectionViewController {
                             inserted = true
                             
                             // adjust transform
+                            // 'move' all elements next to inserted
                             for k in 0..<transform.count {
                                 if transform[k] >= j {
                                     transform[k] += 1
                                 }
                             }
                             transform[leftArrayCount + i] = j
-                            
-                            
-                            
                             break
                         }
                     }
@@ -161,6 +167,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
                                 transform[k] += 1
                             }
                         }
+                        
                         transform[leftArrayCount + i] = leftArray.count - 1
                     }
                     
@@ -168,6 +175,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
                 
                 self.collectionView?.performBatchUpdates({
                     let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
+                    // move items from 0 section to 1st. Adjust indexes by already merged items and corresponding to transform
                     for i in 0..<totalCount {
                         self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + transform[i], section: 1))
                     }
@@ -191,37 +199,18 @@ class VisualizationCollectionViewController: UICollectionViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            var needToMergeCount = 0
-            for array in needToMerge {
-                needToMergeCount += array.count
-            }
-            return needToMergeCount
+            // count items in 2-dim array
+            return needToMerge.reduce(0, {$0 + $1.count})
         case 1:
-            var mergedCount = 0
-            for array in merged {
-                mergedCount += array.count
-            }
-            return mergedCount
+            return merged.reduce(0, {$0 + $1.count})
         default:
             return 0
         }
@@ -232,6 +221,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
     
         var element = 0
         var items = 0
+        // find the corresponding element (since array is 2-dim)
         for array in [needToMerge, merged][indexPath.section] {
             if indexPath.item < items + array.count {
                 element = array[indexPath.item - items]
@@ -243,36 +233,5 @@ class VisualizationCollectionViewController: UICollectionViewController {
         
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

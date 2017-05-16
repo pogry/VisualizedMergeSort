@@ -9,40 +9,35 @@
 import UIKit
 
 class MergeSortCollectionViewLayout: UICollectionViewLayout {
-    
+    // input arrays
     var merged = [[Int]]()
     var needToMerge = [[Int]]()
-    
+    // item counts (array is 2-dimentional)
     var totalItemCount = 0
     var mergedItemCount = 0
     var needToMergeItemCount = 0
-    
-    
+    // vertical levels & offsets
     var verticalLevels = 0
     var topLevelHorizontalOffset = CGFloat(10)
     var verticalOffset = CGFloat(0)
-    
     var needToMergeLevel = 0
     var mergedLevel = 0
     var needToMergeOffset = CGFloat(0)
     var mergedOffset = CGFloat(0)
-    
+    // sizes & frames
     var itemSize = CGFloat(0)
     var rects = [[CGRect]]()
     
     override func prepare() {
-        mergedItemCount = 0
-        for array in merged {
-            mergedItemCount += array.count
-        }
-        needToMergeItemCount = 0
-        for array in needToMerge {
-            needToMergeItemCount += array.count
-        }
+        mergedItemCount = merged.reduce(0, {$0 + $1.count})
+        needToMergeItemCount = needToMerge.reduce(0, {$0 + $1.count})
         totalItemCount = mergedItemCount + needToMergeItemCount
+        // each loop of merge is visualized on a different vertical level
         verticalLevels = Int(ceil(log2(Float(totalItemCount)))) + 1
         
         
+        // Identify current level
+        // blocks at the start of merge loop
         var countAtStartOfLevelMerge = 0
         if merged.count == 0 {
             countAtStartOfLevelMerge = needToMerge.count
@@ -58,6 +53,7 @@ class MergeSortCollectionViewLayout: UICollectionViewLayout {
             needToMergeLevel = mergedLevel - 1
         }
         
+        // adjust sizes & offsets to feet the screen
         let width = collectionView!.bounds.width
         itemSize = min(100, (width - CGFloat(totalItemCount + 1) * topLevelHorizontalOffset) / CGFloat(totalItemCount))
         verticalOffset = (collectionView!.bounds.height - CGFloat(verticalLevels + 1) * itemSize) / CGFloat(verticalLevels)
@@ -66,6 +62,7 @@ class MergeSortCollectionViewLayout: UICollectionViewLayout {
         mergedOffset = (width - CGFloat(mergedItemCount) * itemSize) / CGFloat(merged.count + 1)
         
         
+        // build frames accroding to horizontal & vertical offsets & sizes
         var needToMergeRects = [CGRect]()
         var y = CGFloat(needToMergeLevel) * itemSize + CGFloat(needToMergeLevel + 1) * verticalOffset
         var x = needToMergeOffset
