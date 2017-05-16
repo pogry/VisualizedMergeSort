@@ -42,11 +42,19 @@ class MergeSortCollectionViewLayout: UICollectionViewLayout {
         totalItemCount = mergedItemCount + needToMergeItemCount
         verticalLevels = Int(ceil(log2(Float(totalItemCount)))) + 1
         
-        if needToMerge.count > 0 {
-            needToMergeLevel = verticalLevels - Int(ceil(log2(Float(needToMergeItemCount)))) - 1
+        
+        var countAtStartOfLevelMerge = 0
+        if merged.count == 0 {
+            countAtStartOfLevelMerge = needToMerge.count
+        } else if needToMerge.count > 0 {
+            countAtStartOfLevelMerge = needToMerge.count + 2 * merged.count
+        }
+        
+        if countAtStartOfLevelMerge > 0 {
+            needToMergeLevel = verticalLevels - Int(ceil(log2(Float(countAtStartOfLevelMerge)))) - 1
             mergedLevel = needToMergeLevel + 1
         } else {
-            mergedLevel = Int(ceil(log2(Float(mergedItemCount))))
+            mergedLevel = verticalLevels - Int(ceil(log2(Float(merged.count)))) - 1
             needToMergeLevel = mergedLevel - 1
         }
         

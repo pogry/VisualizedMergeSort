@@ -18,13 +18,16 @@ class VisualizationCollectionViewController: UICollectionViewController {
     var needToMerge = [[Int]]()
     
     var layout: MergeSortCollectionViewLayout!
+    
+    let animationSpeed = Float(0.2)
+    let animationDelay = 0.2
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         layout = collectionView?.collectionViewLayout as! MergeSortCollectionViewLayout
-        collectionView?.forFirstBaselineLayout.layer.speed = 0.5
-        collectionView?.forLastBaselineLayout.layer.speed = 0.5
+        collectionView?.forFirstBaselineLayout.layer.speed = animationSpeed
+        collectionView?.forLastBaselineLayout.layer.speed = animationSpeed
         
         // initial state
         merged = [inputArray]
@@ -33,6 +36,18 @@ class VisualizationCollectionViewController: UICollectionViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        mergeSort()
+    }
+    
+    // MARK: - sort
+    
+    func mergeSort() {
+        splitMerged {
+            self.merge()
+        }
+    }
+    
+    func splitMerged(completion:@escaping () -> Void) {
         needToMerge = []
         for array in merged {
             for item in array {
@@ -40,10 +55,7 @@ class VisualizationCollectionViewController: UICollectionViewController {
             }
         }
         merged = []
-        reload()
-    }
-    
-    func reload() {
+        
         layout.merged = merged
         layout.needToMerge = needToMerge
         
@@ -51,7 +63,127 @@ class VisualizationCollectionViewController: UICollectionViewController {
             for i in 0..<self.needToMerge.count {
                 self.collectionView?.moveItem(at: IndexPath(item: i, section: 1), to: IndexPath(item: i, section: 0))
             }
-        }, completion: nil)
+        }, completion: { (success) in
+            if success {
+                completion()
+            }
+        })
+    }
+    
+    func swapMergedAndUnmerged(completion:@escaping () -> Void) {
+        needToMerge = merged
+        merged = []
+        
+        layout.merged = merged
+        layout.needToMerge = needToMerge
+        
+        var totalCount = 0
+        for array in needToMerge {
+            totalCount += array.count
+        }
+        
+        collectionView?.performBatchUpdates({
+            for i in 0..<totalCount {
+                self.collectionView?.moveItem(at: IndexPath(item: i, section: 1), to: IndexPath(item: i, section: 0))
+            }
+        }, completion: { (success) in
+            if success {
+                completion()
+            }
+        })
+    }
+    
+    func merge() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay) {
+            if self.needToMerge.count == 0 {
+                if self.merged.count == 1 {
+                    // array is sorted
+                } else {
+                    self.swapMergedAndUnmerged {
+                        self.merge()
+                    }
+                }
+            } else if self.needToMerge.count == 1 {
+                // odd number of arrays, just move an array to merged
+                self.collectionView?.performBatchUpdates({
+                    let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
+                    for i in 0..<self.needToMerge[0].count {
+                        self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + i, section: 1))
+                    }
+                    
+                    self.merged.append(self.needToMerge[0])
+                    self.needToMerge = []
+                    
+                    self.layout.merged = self.merged
+                    self.layout.needToMerge = self.needToMerge
+                }, completion: { (success) in
+                    if success {
+                        self.merge()
+                    }
+                })
+            } else {
+                var leftArray = self.needToMerge[0]
+                let rightArray = self.needToMerge[1]
+                let leftArrayCount = leftArray.count
+                let totalCount = leftArray.count + rightArray.count
+                // save the transform to perform animation
+                var transform = [Int]()
+                for i in 0..<totalCount {
+                    transform.append(i)
+                }
+                
+                
+                for i in 0..<rightArray.count {
+                    var inserted = false
+                    for j in 0..<leftArray.count {
+                        if rightArray[i] < leftArray[j] {
+                            leftArray.insert(rightArray[i], at: j)
+                            inserted = true
+                            
+                            // adjust transform
+                            for k in 0..<transform.count {
+                                if transform[k] >= j {
+                                    transform[k] += 1
+                                }
+                            }
+                            transform[leftArrayCount + i] = j
+                            
+                            
+                            
+                            break
+                        }
+                    }
+                    if !inserted {
+                        leftArray.append(rightArray[i])
+                        // adjust transform
+                        for k in 0..<transform.count {
+                            if transform[k] >= leftArray.count - 1 {
+                                transform[k] += 1
+                            }
+                        }
+                        transform[leftArrayCount + i] = leftArray.count - 1
+                    }
+                    
+                }
+                
+                self.collectionView?.performBatchUpdates({
+                    let mergedItemCount = self.collectionView!.numberOfItems(inSection: 1)
+                    for i in 0..<totalCount {
+                        self.collectionView?.moveItem(at: IndexPath(item: i, section: 0), to: IndexPath(item: mergedItemCount + transform[i], section: 1))
+                    }
+                    self.needToMerge.remove(at: 1)
+                    self.needToMerge.remove(at: 0)
+                    self.merged.append(leftArray)
+                    
+                    self.layout.merged = self.merged
+                    self.layout.needToMerge = self.needToMerge
+                }, completion: { (success) in
+                    if success {
+                        self.merge()
+                    }
+                })
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
