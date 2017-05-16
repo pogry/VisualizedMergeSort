@@ -54,7 +54,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Input Array" id="sZ2-1C-SAQ">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Sort" id="6FO-y9-p52"/>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Sort" id="6FO-y9-p52">
+                            <connections>
+                                <segue destination="4RX-S3-NGb" kind="show" id="d78-b5-Nue"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="sortButton" destination="6FO-y9-p52" id="NVI-Tk-dQE"/>
@@ -62,7 +66,54 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="639-AH-Yl7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="641" y="-15"/>
+            <point key="canvasLocation" x="417" y="39"/>
+        </scene>
+        <!--Visualization-->
+        <scene sceneID="R4U-4n-vte">
+            <objects>
+                <collectionViewController id="4RX-S3-NGb" customClass="VisualizationCollectionViewController" customModule="AnimatedMergeSort" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="nhb-yV-L8I">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewLayout key="collectionViewLayout" id="lTv-8Z-RXa" customClass="MergeSortCollectionViewLayout" customModule="AnimatedMergeSort" customModuleProvider="target"/>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NumberCell" id="oYL-sn-aAy" customClass="NumberCollectionViewCell" customModule="AnimatedMergeSort" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Jvx-05-zPy">
+                                            <rect key="frame" x="4" y="4" width="42" height="42"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="Jvx-05-zPy" firstAttribute="top" secondItem="oYL-sn-aAy" secondAttribute="top" constant="4" id="M0f-nX-wai"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jvx-05-zPy" secondAttribute="trailing" constant="4" id="QSi-sU-ZbM"/>
+                                    <constraint firstAttribute="bottom" secondItem="Jvx-05-zPy" secondAttribute="bottom" constant="4" id="aBE-QT-OM3"/>
+                                    <constraint firstItem="Jvx-05-zPy" firstAttribute="leading" secondItem="oYL-sn-aAy" secondAttribute="leading" constant="4" id="xIh-jS-oo7"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="numberLabel" destination="Jvx-05-zPy" id="b1o-J3-pQV"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="4RX-S3-NGb" id="pUQ-GI-iac"/>
+                            <outlet property="delegate" destination="4RX-S3-NGb" id="Nth-ko-m0G"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Visualization" id="6gA-Gl-6CM"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ld2-Ux-ZDv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1153" y="38"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="46z-EM-F5p">

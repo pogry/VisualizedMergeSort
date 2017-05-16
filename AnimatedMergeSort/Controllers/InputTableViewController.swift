@@ -12,13 +12,14 @@ class InputTableViewController: UITableViewController, InputTableViewCellDelegat
     @IBOutlet weak var sortButton: UIBarButtonItem!
     
     // limit of elements for visualisation
-    let MAX_ELEMENTS = 16
+    let MAX_ELEMENTS = 8
     var inputArray = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.isEditing = true
+        // don't show empty rows
         tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     
@@ -28,6 +29,7 @@ class InputTableViewController: UITableViewController, InputTableViewCellDelegat
             cell.becomeFirstResponder()
         }
         
+        // set up header label
         let label = tableView.headerView(forSection: 0)?.textLabel
         label?.minimumScaleFactor = 0.5
         label?.adjustsFontSizeToFitWidth = true
@@ -165,14 +167,12 @@ class InputTableViewController: UITableViewController, InputTableViewCellDelegat
         return indexPath.row < inputArray.count
     }
 
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        guard let vc = segue.destination as? VisualizationCollectionViewController else {
+            return
+        }
+        vc.inputArray = inputArray
     }
-    */
 
 }

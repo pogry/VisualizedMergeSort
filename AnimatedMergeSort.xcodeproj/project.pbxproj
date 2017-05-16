@@ -13,6 +13,9 @@
 		D2DCCB431ECAD9880029FB49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2DCCB411ECAD9880029FB49 /* LaunchScreen.storyboard */; };
 		D2DCCB4C1ECAE0630029FB49 /* InputTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */; };
 		D2DCCB4F1ECAE1AD0029FB49 /* InputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */; };
+		D2DCCB531ECB00160029FB49 /* NumberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB521ECB00160029FB49 /* NumberCollectionViewCell.swift */; };
+		D2DCCB551ECB02750029FB49 /* VisualizationCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB541ECB02750029FB49 /* VisualizationCollectionViewController.swift */; };
+		D2DCCB581ECB07050029FB49 /* MergeSortCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DCCB571ECB07050029FB49 /* MergeSortCollectionViewLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		D2DCCB441ECAD9880029FB49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputTableViewController.swift; path = Controllers/InputTableViewController.swift; sourceTree = "<group>"; };
 		D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputTableViewCell.swift; path = Views/InputTableViewCell.swift; sourceTree = "<group>"; };
+		D2DCCB521ECB00160029FB49 /* NumberCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumberCollectionViewCell.swift; path = Views/NumberCollectionViewCell.swift; sourceTree = "<group>"; };
+		D2DCCB541ECB02750029FB49 /* VisualizationCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VisualizationCollectionViewController.swift; path = Controllers/VisualizationCollectionViewController.swift; sourceTree = "<group>"; };
+		D2DCCB571ECB07050029FB49 /* MergeSortCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MergeSortCollectionViewLayout.swift; path = Layput/MergeSortCollectionViewLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,7 @@
 		D2DCCB371ECAD9880029FB49 /* AnimatedMergeSort */ = {
 			isa = PBXGroup;
 			children = (
+				D2DCCB561ECB06D80029FB49 /* Layout */,
 				D2DCCB4D1ECAE17E0029FB49 /* Views */,
 				D2DCCB4A1ECAE04A0029FB49 /* Controllers */,
 				D2DCCB381ECAD9880029FB49 /* AppDelegate.swift */,
@@ -71,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				D2DCCB4B1ECAE0630029FB49 /* InputTableViewController.swift */,
+				D2DCCB541ECB02750029FB49 /* VisualizationCollectionViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -79,8 +87,17 @@
 			isa = PBXGroup;
 			children = (
 				D2DCCB4E1ECAE1AD0029FB49 /* InputTableViewCell.swift */,
+				D2DCCB521ECB00160029FB49 /* NumberCollectionViewCell.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		D2DCCB561ECB06D80029FB49 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D2DCCB571ECB07050029FB49 /* MergeSortCollectionViewLayout.swift */,
+			);
+			name = Layout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,8 +174,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2DCCB4C1ECAE0630029FB49 /* InputTableViewController.swift in Sources */,
+				D2DCCB531ECB00160029FB49 /* NumberCollectionViewCell.swift in Sources */,
+				D2DCCB551ECB02750029FB49 /* VisualizationCollectionViewController.swift in Sources */,
 				D2DCCB4F1ECAE1AD0029FB49 /* InputTableViewCell.swift in Sources */,
 				D2DCCB391ECAD9880029FB49 /* AppDelegate.swift in Sources */,
+				D2DCCB581ECB07050029FB49 /* MergeSortCollectionViewLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
